@@ -1,10 +1,9 @@
-// nuxt.config.ts
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
   devtools: { enabled: false },
 
-  // SPA build for GitHub Pages
+  // SPA build (good for GitHub Pages)
   ssr: false,
 
   css: ["~/assets/styles/main.scss"],
@@ -20,8 +19,9 @@ export default defineNuxtConfig({
   },
 
   app: {
-    // Keep "/" — the GitHub Action will inject the proper base path during CI
-    baseURL: "/",
+    // IMPORTANT: set to your repo name for project pages
+    // If you later deploy to a user/org root (username.github.io), change this to "/"
+    baseURL: "/Offline-Client-Side-ICS-Viewer/",
     head: {
       title: "ICS Viewer",
       meta: [
@@ -35,11 +35,20 @@ export default defineNuxtConfig({
     },
   },
 
-  // Safer prerender defaults for GH Pages (keeps build green on soft 404s)
+  // GitHub Pages-friendly output (creates 404.html fallback, etc.)
   nitro: {
+    preset: "github-pages",
     prerender: {
       crawlLinks: true,
       failOnError: false,
+      routes: ["/"], // ensure index is generated
     },
   },
+
+  // Optional: if you want to control via env in CI
+  // runtimeConfig: {
+  //   public: {
+  //     baseURL: process.env.NUXT_APP_BASE_URL || "/Offline-Client-Side-ICS-Viewer/",
+  //   },
+  // },
 });
